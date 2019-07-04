@@ -1,0 +1,44 @@
+devigner_dynamics_crm:
+  hostname: '%env(DYNAMICS_HOSTNAME)%'
+  username: '%env(DYNAMICS_USERNAME)%'
+  password: '%env(DYNAMICS_PASSWORD)%'
+  authMode: 'OnlineFederation' # OnlineFederation = Office 365, Federation = OnPremise
+  entities:
+
+    App\Entity\User\User:
+      dynamicsEntityName: contact
+      keyMapping:
+        localKey: email
+        remoteKey: emailaddress1
+      mapping:
+        - localField: firstName
+          dynamicsField: firstname
+        - localField: lastName
+          dynamicsField: lastname
+        - localField: telephone
+          dynamicsField: telephone1
+        - localField: email
+          dynamicsField: emailaddress1
+        - localField: account_id
+          dynamicsField: parentcustomerid
+          mappingClass: App\Entity\User\Company
+          localMappingField: company
+          type: Devigner\DynamicsCRMBundle\DataTransformer\ManyToOneTransformer
+
+    App\Entity\User\Company:
+      dynamicsEntityName: account
+      keyMapping:
+        localKey: dynamicsId
+        remoteKey: accountid
+      mapping:
+        - localField: name
+          dynamicsField: name
+        - localField: street
+          dynamicsField: address1_line1
+        - localField: postalCode
+          dynamicsField: address1_postalcode
+        - localField: city
+          dynamicsField: address1_city
+        - localField: country
+          dynamicsField: connekt_adres1land
+
