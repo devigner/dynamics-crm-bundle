@@ -40,5 +40,5 @@ devigner_dynamics_crm:
         - localField: city
           dynamicsField: address1_city
         - localField: country
-          dynamicsField: connekt_adres1land
+          dynamicsField: address1_country
 
