@@ -1,0 +1,25 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Devigner\DynamicsCRMBundle\Command\:
+    resource: '../../Command'
+    public: true
+
+  Devigner\DynamicsCRMBundle\Dynamics\ClientInterface: '@Devigner\DynamicsCRMBundle\Dynamics\ClientCRMToolkit'
+  Devigner\DynamicsCRMBundle\Dynamics\ClientCRMToolkit:
+    calls:
+      - [setLogger, ['@logger']]
+      - [setEntityManager, ['@doctrine.orm.default_entity_manager']]
+
+  Devigner\DynamicsCRMBundle\EventListener\DynamicsEventListener:
+    public: true
+    tags:
+      - { name: doctrine.event_listener, event: prePersist }
+
+  Devigner\DynamicsCRMBundle\EventListener\DynamicsSyncLoginListener:
+    public: true
+    tags:
+      - { name: security.interactive_login, event: onSecurityInteractiveLogin }
